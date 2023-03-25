@@ -1,0 +1,213 @@
+// Name: Mitchell Rotter-Sieren
+// Class: F21 CS F002A 03W
+// Assignment: Assignment #6, A Three Char Class
+
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std;
+
+const char DEFAULT_CHAR = 'O';
+
+class ThreeChar
+{
+public:
+   const int MIN_LETTER = 'A';
+   const int MAX_LETTER = 'Z';
+   bool setChar1(char newChar1);
+   bool setChar2(char newChar2);
+   bool setChar3(char newChar3);
+   char getChar1();
+   char getChar2();
+   char getChar3();
+   bool validChar(char testChar);
+   // Precondition: checks if a character is between capital A and Z.
+
+private:
+   char char1 = DEFAULT_CHAR;
+   char char2 = DEFAULT_CHAR;
+   char char3 = DEFAULT_CHAR;
+
+};
+
+int main()
+{
+   ThreeChar exampleOne, exampleTwo, exampleThree, exampleFour;
+
+   // setting characters for first object
+   exampleOne.setChar1('A');
+   cout << "The first character in exampleOne is " << exampleOne.getChar1()
+         << endl;
+
+   exampleOne.setChar2('B');
+   cout << "The second character in exampleOne is " << exampleOne.getChar2()
+         << endl;
+
+   exampleOne.setChar3('Z');
+   cout << "The third character in exampleOne is " << exampleOne.getChar3()
+         << endl;
+
+   cout << "The three characters in exampleOne are " << exampleOne.getChar1()
+         << ", " << exampleOne.getChar2() << ", " << exampleOne.getChar3()
+         << endl << endl;
+
+   // setting characters for second object, includes two mutator tests to test
+   // if calls are successful.
+   if (exampleTwo.setChar1('m'))
+   {
+      cout << "The mutator was successful in setting a new character" << endl;
+      cout << "The first character in exampleTwo is " << exampleTwo.getChar1()
+            << endl;
+   }
+   else
+   {
+      cout << "The mutator was unsuccessful in setting a new character, and "
+            "has defaulted to be " << DEFAULT_CHAR << endl;
+      cout << "The first character in exampleTwo is " << exampleTwo.getChar1()
+            << endl;
+   }
+
+   if (exampleTwo.setChar2('C'))
+   {
+      cout << "The mutator was successful in setting a new character" << endl;
+      cout << "The second character in exampleTwo is " << exampleTwo.getChar2()
+            << endl;
+   }
+   else
+   {
+      cout << "The mutator was unsuccessful in setting a new character, and "
+            "has defaulted to be " << DEFAULT_CHAR << endl;
+      cout << "The second character in exampleTwo is " << exampleTwo.getChar2()
+            << endl;
+   }
+
+   // setting characters for third object
+   exampleTwo.setChar3('D');
+   cout << "The third character in exampleTwo is " << exampleTwo.getChar3()
+         << endl;
+
+   cout << "The three characters in exampleTwo are " << exampleTwo.getChar1()
+         << ", " << exampleTwo.getChar2() << ", " << exampleTwo.getChar3()
+         << endl << endl;
+
+   exampleThree.setChar1('M');
+   cout << "The first character in exampleThree is " << exampleThree.getChar1()
+         << endl;
+
+   exampleThree.setChar2('B');
+   cout << "The second character in exampleThree is " << exampleThree.getChar2()
+         << endl;
+
+   exampleThree.setChar3('D');
+   cout << "The third character in exampleThree is " << exampleThree.getChar3()
+         << endl;
+
+   cout << "The three characters in exampleThree are "
+         << exampleThree.getChar1() << ", " << exampleThree.getChar2() << ", "
+         << exampleThree.getChar3() << endl << endl;
+
+   // setting characters for fourth object
+   exampleFour.setChar1('P');
+   cout << "The first character in exampleFour is " << exampleFour.getChar1()
+         << endl;
+
+   exampleFour.setChar2('L');
+   cout << "The second character in exampleFour is " << exampleFour.getChar2()
+         << endl;
+
+   exampleFour.setChar3('Z');
+   cout << "The third character in exampleFour is " << exampleFour.getChar3()
+         << endl;
+
+   cout << "The three characters in exampleFour are " << exampleFour.getChar1()
+         << ", " << exampleFour.getChar2() << ", " << exampleFour.getChar3()
+         << endl << endl;
+
+   return(1);
+}
+
+//checks if char input is a capital letter between A and Z.
+bool ThreeChar::validChar(char testChar)
+{
+   const int MIN_LETTER = 'A';
+   const int MAX_LETTER = 'Z';
+
+   if (testChar >= MIN_LETTER && testChar <= MAX_LETTER)
+      return true;
+   else
+      return false;
+}
+
+bool ThreeChar::setChar1(char newChar1)
+{
+   if (validChar(newChar1))
+   {
+      char1 = newChar1;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool ThreeChar::setChar2(char newChar2)
+{
+   if (validChar(newChar2))
+   {
+      char2 = newChar2;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool ThreeChar::setChar3(char newChar3)
+{
+   if (validChar(newChar3))
+   {
+      char3 = newChar3;
+      return true;
+   }
+   else
+      return false;
+}
+
+char ThreeChar::getChar1()
+{
+   return char1;
+}
+
+char ThreeChar::getChar2()
+{
+   return char2;
+}
+
+char ThreeChar::getChar3()
+{
+   return char3;
+}
+
+
+/* -------------------------- OUTPUT ----------------------
+
+The first character in exampleOne is A
+The second character in exampleOne is B
+The third character in exampleOne is Z
+The three characters in exampleOne are A, B, Z
+
+The mutator was unsuccessful in setting a new character, and has defaulted to be O
+The first character in exampleTwo is O
+The mutator was successful in setting a new character
+The second character in exampleTwo is C
+The third character in exampleTwo is D
+The three characters in exampleTwo are O, C, D
+
+The first character in exampleThree is M
+The second character in exampleThree is B
+The third character in exampleThree is D
+The three characters in exampleThree are M, B, D
+
+The first character in exampleFour is P
+The second character in exampleFour is L
+The third character in exampleFour is Z
+The three characters in exampleFour are P, L, Z
+------------------------------------------------------- */

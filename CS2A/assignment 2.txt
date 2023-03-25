@@ -1,0 +1,353 @@
+// Name: Mitchell Rotter-Sieren
+// Class: F21 CS F002A 03W
+// Assignment: Assignment #2, Nutrition Calculator
+
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std;
+
+// main client --------------------------------------------------------
+int main()
+{
+   // food #1 constants
+   const string FOOD_1_NAME = "eggs";
+   const  int FOOD_1_CALORIES_P100G = 143;  // in calories
+   const  double FOOD_1_CARBS_P100G = 0.8; // in grams
+   const  double FOOD_1_FAT_P100G = 9.9; // in grams
+   const  double FOOD_1_PROTEIN_P100G = 12.6; // in grams
+   const  double FOOD_1_SUGAR_P100G = 0.8;   // in grams
+
+
+   // food #2 constants
+   const  string FOOD_2_NAME = "sugar";
+   const  int FOOD_2_CALORIES_P100G = 387;  // in calories
+   const  double FOOD_2_CARBS_P100G = 100.; // in grams
+   const  double FOOD_2_FAT_P100G = 0.; // in grams
+   const  double FOOD_2_PROTEIN_P100G = 0.; // in grams
+   const  double FOOD_2_SUGAR_P100G = 99.9;   // in grams
+
+   // food #3 constants
+   const  string FOOD_3_NAME = "butter";
+   const  int FOOD_3_CALORIES_P100G = 717;  // in calories
+   const  double FOOD_3_CARBS_P100G = 0.1; // in grams
+   const  double FOOD_3_FAT_P100G = 81.1; // in grams
+   const  double FOOD_3_PROTEIN_P100G = 0.9; // in grams
+   const  double FOOD_3_SUGAR_P100G = 0.1;   // in grams
+
+   // food #4 constants
+   const  string FOOD_4_NAME = "chocolate";
+   const  int FOOD_4_CALORIES_P100G = 501;  // in calories
+   const  double FOOD_4_CARBS_P100G = 29.8; // in grams
+   const  double FOOD_4_FAT_P100G = 52.3; // in grams
+   const  double FOOD_4_PROTEIN_P100G = 12.9; // in grams
+   const  double FOOD_4_SUGAR_P100G = 0.9;   // in grams
+
+   // food #5 constants
+   const  string FOOD_5_NAME = "vanilla";
+   const  int FOOD_5_CALORIES_P100G = 288;  // in calories
+   const  double FOOD_5_CARBS_P100G = 12.7; // in grams
+   const  double FOOD_5_FAT_P100G = 0.1; // in grams
+   const  double FOOD_5_PROTEIN_P100G = 0.1; // in grams
+   const  double FOOD_5_SUGAR_P100G = 12.7;   // in grams
+
+   // error testing constants
+   const int MAX_GRAMS = 2000;
+   const int MIN_GRAMS = 0;
+   const int MAX_SERVINGS = 10;
+   const int MIN_SERVINGS = 1;
+
+   const  string INDENT = "   ";
+
+   string recipeName, userInputStr;
+   int userInputInt, userNumServings;
+   double totalCals,totalCarbs,totalFats,totalProtein,totalSugar;
+
+   // initialize accumulator variables
+   totalCals =  0;
+   totalCarbs = 0;
+   totalFats = 0;
+   totalProtein = 0;
+   totalSugar = 0;
+
+   // print menu
+   cout << "---------- List of Possible Ingredients ---------" << endl;
+   cout << INDENT << "Food #1: " << FOOD_1_NAME << endl;
+   cout << INDENT << "Food #2: " << FOOD_2_NAME << endl;
+   cout << INDENT << "Food #3: " << FOOD_3_NAME << endl;
+   cout << INDENT << "Food #4: " << FOOD_4_NAME << endl;
+   cout << INDENT << "Food #5: " << FOOD_5_NAME << endl << endl;
+
+   // name of recipe
+   cout << "What are you calling this recipe? ";
+   getline(cin, recipeName);
+
+   // prompt for number of servings
+   cout << "How many servings does the recipe make?";
+   getline(cin, userInputStr);
+   istringstream(userInputStr) >> userNumServings;
+
+   // tests if user inputs realistic number of servings
+   if (userNumServings < MIN_SERVINGS || userNumServings > MAX_SERVINGS)
+   {
+      cout << "ERROR: Unrealistic number inputted, program will now exit";
+      return (1);
+   }
+
+   // food #1 ---------------------------------------------------------
+   cout << "How many grams of " << FOOD_1_NAME << "? ";
+   getline(cin, userInputStr);
+   istringstream(userInputStr) >> userInputInt;
+
+   // tests if user inputs realistic number of grams
+   if (userInputInt < MIN_GRAMS || userInputInt > MAX_GRAMS)
+   {
+      cout << "ERROR: Unrealistic number inputted, program will now exit";
+      return (1);
+   }
+
+
+   // update accumulators
+   totalCals += userInputInt * (FOOD_1_CALORIES_P100G / 100.);
+   totalCarbs  += userInputInt * (FOOD_1_CARBS_P100G / 100.);
+   totalFats  += userInputInt * (FOOD_1_FAT_P100G / 100.);
+   totalProtein  += userInputInt * (FOOD_1_PROTEIN_P100G / 100.);
+   totalSugar  += userInputInt * (FOOD_1_SUGAR_P100G / 100.);
+
+   // food #2 ---------------------------------------------------------
+   cout << "How many grams of " << FOOD_2_NAME << "? ";
+   getline(cin, userInputStr);
+   istringstream(userInputStr) >> userInputInt;
+
+   // tests if user inputs realistic number of grams
+   if (userInputInt < MIN_GRAMS || userInputInt > MAX_GRAMS)
+   {
+      cout << "ERROR: Unrealistic number inputted, program will now exit";
+      return (1);
+   }
+
+   // update accumulators
+   totalCals += userInputInt * (FOOD_2_CALORIES_P100G / 100.);
+   totalCarbs  += userInputInt * (FOOD_2_CARBS_P100G / 100.);
+   totalFats  += userInputInt * (FOOD_2_FAT_P100G / 100.);
+   totalProtein  += userInputInt * (FOOD_2_PROTEIN_P100G / 100.);
+   totalSugar  += userInputInt * (FOOD_2_SUGAR_P100G / 100.);
+
+   // food #3 ---------------------------------------------------------
+   cout << "How many grams of " << FOOD_3_NAME << "? ";
+   getline(cin, userInputStr);
+   istringstream(userInputStr) >> userInputInt;
+
+   // tests if user inputs realistic number of grams
+   if (userInputInt < MIN_GRAMS || userInputInt > MAX_GRAMS)
+   {
+      cout << "ERROR: Unrealistic number inputted, program will now exit";
+      return (1);
+   }
+
+   // update accumulators
+   totalCals += userInputInt * (FOOD_3_CALORIES_P100G / 100.);
+   totalCarbs  += userInputInt * (FOOD_3_CARBS_P100G / 100.);
+   totalFats  += userInputInt * (FOOD_3_FAT_P100G / 100.);
+   totalProtein  += userInputInt * (FOOD_3_PROTEIN_P100G / 100.);
+   totalSugar  += userInputInt * (FOOD_3_SUGAR_P100G / 100.);
+
+   // food #4 ---------------------------------------------------------
+   cout << "How many grams of " << FOOD_4_NAME << "? ";
+   getline(cin, userInputStr);
+   istringstream(userInputStr) >> userInputInt;
+
+   // tests if user inputs realistic number of grams
+   if (userInputInt < MIN_GRAMS || userInputInt > MAX_GRAMS)
+   {
+      cout << "ERROR: Unrealistic number inputted, program will now exit";
+      return (1);
+   }
+
+   // update accumulators
+   totalCals += userInputInt * (FOOD_4_CALORIES_P100G / 100.);
+   totalCarbs  += userInputInt * (FOOD_4_CARBS_P100G / 100.);
+   totalFats  += userInputInt * (FOOD_4_FAT_P100G / 100.);
+   totalProtein  += userInputInt * (FOOD_4_PROTEIN_P100G / 100.);
+   totalSugar  += userInputInt * (FOOD_4_SUGAR_P100G / 100.);
+
+   // food #5 ---------------------------------------------------------
+   cout << "How many grams of " << FOOD_5_NAME << "? ";
+   getline(cin, userInputStr);
+   istringstream(userInputStr) >> userInputInt;
+
+   // tests if user inputs realistic number of grams
+   if (userInputInt < MIN_GRAMS || userInputInt > MAX_GRAMS)
+   {
+      cout << "ERROR: Unrealistic number inputted, program will now exit";
+      return (1);
+   }
+
+   // update accumulators
+   totalCals += userInputInt * (FOOD_5_CALORIES_P100G / 100.);
+   totalCarbs  += userInputInt * (FOOD_5_CARBS_P100G / 100.);
+   totalFats  += userInputInt * (FOOD_5_FAT_P100G / 100.);
+   totalProtein  += userInputInt * (FOOD_5_PROTEIN_P100G / 100.);
+   totalSugar  += userInputInt * (FOOD_5_SUGAR_P100G / 100.);
+
+   // update accumulators based on serving size
+   totalCals /= userNumServings;
+   totalCarbs  /= userNumServings;
+   totalFats  /= userNumServings;
+   totalProtein  /= userNumServings;
+   totalSugar  /= userNumServings;
+
+   // report results --------------------------------------------------
+   cout << "\nNutrition for one serving of " <<
+       recipeName << "------------" << endl;
+   cout << INDENT << "Calories: " << totalCals << endl;
+   cout << INDENT << "Carbohydrates: " << totalCarbs << " grams\n";
+   cout << INDENT << "Total Fat: " << totalFats << " grams\n";
+   cout << INDENT << "Protein: " << totalProtein << " grams\n";
+   cout << INDENT << "Sugars: " << totalSugar << " grams\n";
+
+   return 0;
+}
+
+/* -------------------------- Run #1 ----------------------
+
+---------- List of Possible Ingredients ---------
+   Food #1: eggs
+   Food #2: sugar
+   Food #3: butter
+   Food #4: chocolate
+   Food #5: vanilla
+
+What are you calling this recipe? Chocolate Chip Cookies
+How many servings does the recipe make?4
+How many grams of eggs? 5
+How many grams of sugar? 30
+How many grams of butter? 27.7
+How many grams of chocolate? 34
+How many grams of vanilla? .42
+
+Nutrition for one serving of Chocolate Chip Cookies------------
+   Calories: 121.795
+   Carbohydrates: 10.0497 grams
+   Total Fat: 10.0435 grams
+   Protein: 1.31475 grams
+   Sugars: 7.58575 grams
+
+   
+------------------------------------------------------- */
+
+
+
+
+
+/* -------------------------- Run #2 ----------------------
+
+---------- List of Possible Ingredients ---------
+   Food #1: eggs
+   Food #2: sugar
+   Food #3: butter
+   Food #4: chocolate
+   Food #5: vanilla
+
+What are you calling this recipe? Vanilla Cake
+How many servings does the recipe make?5
+How many grams of eggs? 100
+How many grams of sugar? 150
+How many grams of butter? 58
+How many grams of chocolate? 0
+How many grams of vanilla? 2.1
+
+Nutrition for one serving of Vanilla Cake------------
+   Calories: 228.307
+   Carbohydrates: 30.2223 grams
+   Total Fat: 11.3069 grams
+   Protein: 2.6239 grams
+   Sugars: 30.1923 grams
+
+
+   
+------------------------------------------------------- */
+
+
+
+
+
+/* -------------------------- Run #3 ----------------------
+
+---------- List of Possible Ingredients ---------
+   Food #1: eggs
+   Food #2: sugar
+   Food #3: butter
+   Food #4: chocolate
+   Food #5: vanilla
+
+What are you calling this recipe? Chocolate Cake
+How many servings does the recipe make?10
+How many grams of eggs? 200
+How many grams of sugar? 600
+How many grams of butter? 500
+How many grams of chocolate? 170
+How many grams of vanilla? 2.6
+
+Nutrition for one serving of Chocolate Cake------------
+   Calories: 705.046
+   Carbohydrates: 65.3014 grams
+   Total Fat: 51.4212 grams
+   Protein: 5.1632 grams
+   Sugars: 60.3284 grams
+
+
+   
+------------------------------------------------------- */
+
+
+
+
+
+/* -------------------------- Run #4 ----------------------
+
+---------- List of Possible Ingredients ---------
+   Food #1: eggs
+   Food #2: sugar
+   Food #3: butter
+   Food #4: chocolate
+   Food #5: vanilla
+
+What are you calling this recipe? Brownie
+How many servings does the recipe make?8
+How many grams of eggs? 50
+How many grams of sugar? 402
+How many grams of butter? 0
+How many grams of chocolate? 180
+How many grams of vanilla? 1
+
+Nutrition for one serving of Brownie------------
+   Calories: 316.49
+   Carbohydrates: 57.0209 grams
+   Total Fat: 12.3864 grams
+   Protein: 3.69013 grams
+   Sugars: 50.4681 grams
+
+
+
+   
+------------------------------------------------------- */
+
+
+
+
+
+/* -------------------------- Run #5 (with error) ---------
+
+   ---------- List of Possible Ingredients ---------
+   Food #1: eggs
+   Food #2: sugar
+   Food #3: butter
+   Food #4: chocolate
+   Food #5: vanilla
+
+What are you calling this recipe? Vanilla Cupcakes
+How many servings does the recipe make?12
+ERROR: Unrealistic number inputted, program will now exit
+
+------------------------------------------------------- */

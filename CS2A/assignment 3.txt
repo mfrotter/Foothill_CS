@@ -1,0 +1,167 @@
+// Name: Mitchell Rotter-Sieren
+// Class: F21 CS F002A 03W
+// Assignment: Assignment #4, Math Reduction
+
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std;
+
+double (int numerator, int denominator);
+// Treats inputted numerator and denominator variables as a fraction and reduces
+// them to the lowest terms.
+
+
+int main()
+{
+   const int MIN_INPUT = 0;
+   const int MAX_INPUT = 500;
+   const int NUM_RUNS = 5;
+
+   double numerator, denominator;
+   string userNumerator, userDenominator;
+
+
+   cout << "Welcome to the lowest terms reducer." << endl;
+   cout << "The range of values is " << MIN_INPUT << " to " << MAX_INPUT << "."
+         <<endl;
+   cout << "There will be " << NUM_RUNS << " runs" << endl << endl;
+
+   // loops the convertToLowestTerms function the number of times set by NUM_RUNS
+   for ( int i = 0; i < NUM_RUNS; i++ )
+   {
+
+      //checks that user's inputs for numerator and denominator are valid, they
+      // have to be between MIN_INPUT and MAX_INPUT.
+      while(1)
+      {
+         cout << "Enter the numerator" << endl;
+         getline(cin, userNumerator);
+         istringstream(userNumerator) >> numerator;
+
+         if ((numerator < MIN_INPUT) || numerator > MAX_INPUT)
+         {
+            cout << "**Sorry, that is out of the range. It must be between "
+                  << MIN_INPUT << " and " << MAX_INPUT << endl << endl;
+            continue;
+         }
+
+         cout << "Enter the denominator" << endl;
+         getline(cin, userDenominator);
+         istringstream(userDenominator) >> denominator;
+
+         if ((denominator < MIN_INPUT) || (denominator > MAX_INPUT))
+         {
+            cout << "**Sorry, that is out of the range. It must be between "
+                  << MIN_INPUT << " and " << MAX_INPUT << endl << endl;
+            continue;
+         }
+
+         break;
+      }
+
+      convertToLowestTerms(numerator, denominator);
+   }
+
+   cout << "The " << NUM_RUNS << " runs have now been completed."  << endl;
+
+   return(1);
+
+}
+
+
+
+double convertToLowestTerms(int numerator, int denominator)
+{
+
+   int gcdNumerator, gcdDenominator, gcd;
+
+   // checks that a denominator is not 0 to avoid dividing by 0. Returns as
+   // false.
+   if (denominator == 0)
+   {
+      cout << "This is not a fraction since you entered 0 for the "
+            "denominator." << endl;
+      return(0);
+   }
+
+   // checks if numerator is set to 0, when 0 is divided by any nonzero number,
+   // the result is 0. Returns as true.
+   if (numerator == 0)
+   {
+      cout << "The new fraction is 0" << endl;
+      return(1);
+   }
+
+   gcdNumerator = numerator;
+   gcdDenominator = denominator;
+
+   // uses the Euclidian Algorithm to compute the greatest common denominator
+   // (GCD) , then the numerator and denominator are divided by the GCD to
+   // achieve the lowest fraction.
+   while(gcdNumerator != gcdDenominator)
+   {
+      if(gcdNumerator > gcdDenominator)
+         gcdNumerator = gcdNumerator - gcdDenominator;
+      else
+         gcdDenominator = gcdDenominator - gcdNumerator;
+   }
+
+   gcd = gcdNumerator;
+   numerator = numerator / gcd;
+   denominator = denominator / gcd;
+
+   cout << "The new fraction is " << numerator << " / " << denominator << endl
+         << endl;
+
+   return(1);
+}
+
+
+/* -------------------------- Run #1 ----------------------
+
+Welcome to the lowest terms reducer.
+The range of values is 0 to 500.
+There will be 5 runs
+
+Enter the numerator
+37
+Enter the denominator
+57
+The new fraction is 37 / 57
+
+Enter the numerator
+16
+Enter the denominator
+14
+The new fraction is 8 / 7
+
+Enter the numerator
+32
+Enter the denominator
+8
+The new fraction is 4 / 1
+
+Enter the numerator
+-5
+**Sorry, that is out of the range. It must be between 0 and 500
+
+Enter the numerator
+5
+Enter the denominator
+555
+**Sorry, that is out of the range. It must be between 0 and 500
+
+Enter the numerator
+0
+Enter the denominator
+456
+The new fraction is 0
+Enter the numerator
+423
+Enter the denominator
+0
+This is not a fraction since you entered 0 for the denominator.
+The 5 runs have now been completed.
+
+------------------------------------------------------- */

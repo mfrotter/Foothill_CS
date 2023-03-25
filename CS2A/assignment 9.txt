@@ -1,0 +1,386 @@
+// Name: Mitchell Rotter-Sieren
+// Class: F21 CS F002A 03W
+// Assignment: Assignment #9, Text Processing
+
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <cctype>
+#include <cmath>
+using namespace std;
+
+
+
+class Target
+{
+public:
+
+   bool setString(string newString);
+   bool setKey(char newKey);
+   string getString();
+   char getKey();
+   string maskCharacter();
+   // will return a new string that has each occurrence of the key character
+   // replaced by a dollar-sign, '$'.
+   string removeCharacter();
+   // will return a new string that has each occurrence of the key character
+   // removed, but all other characters left intact.
+   int keyCount();
+   // will return the number of key characters that appear in the string
+   // (case sensitive).
+
+
+private:
+   string theString;
+   char keyCharacter;
+
+};
+
+char getKeyCharacter();
+// requests a single character from the user and continues to ask for it until
+// the user gets it right:  this method will test to make sure the user only
+// types one single character.  0, 2, 3 or more characters will be flagged as
+// an error and the method will keep at the user until he types just one
+// character.
+
+string getString();
+// requests a string from the user and continues to ask for it until the user
+// gets it right:  this method will test to make sure the user only types a
+// string that has at least 6 characters.
+
+int main()
+{
+   const int NUM_LOOPS = 3;
+
+   Target textProcess;
+   int i;
+
+   for (i = 0; i < NUM_LOOPS; i++)
+   {
+   textProcess.setKey(getKeyCharacter()); //getKeyCharacter tests for correct
+   // input
+   textProcess.setString(getString()); //getString tests for correct input
+
+   cout << "String with '" << textProcess.getKey() << "' masked:" << endl;
+   cout << textProcess.maskCharacter() << endl << endl;
+
+   cout << "String with '" << textProcess.getKey() << "' removed:" << endl;
+   cout << textProcess.removeCharacter() << endl << endl;
+
+   cout << "# of " << textProcess.getKey() << "'s: " << textProcess.keyCount()
+         << endl << endl;
+   }
+
+   cout << "That's it for this many trials: " << NUM_LOOPS << endl;
+
+   return(0);
+}
+
+bool Target::setString(string newString)
+{
+   theString = newString;
+   return true;
+}
+
+bool Target::setKey(char newKey)
+{
+   keyCharacter = newKey;
+   return true;
+
+}
+
+string Target::getString()
+{
+   return theString;
+}
+
+char Target::getKey()
+{
+   return keyCharacter;
+}
+
+// Any character that matches the key character will be replaced with "$".
+string Target::maskCharacter()
+{
+   getString();
+   getKey();
+   int i;
+   string maskTheString = theString;
+
+   for (i = 0; i < maskTheString.length(); i++)
+   {
+      if (maskTheString[i] == getKey())
+         maskTheString[i] = '$';
+   }
+
+   return maskTheString;
+
+}
+
+// Removes the key character from the phrase, this removal is the same as a
+// backspace and not a replacement with a blank space.
+string Target::removeCharacter()
+{
+   getString();
+   getKey();
+   int i;
+   string removeTheString = theString;
+   string noCharacter, removeChar;
+
+   removeChar.push_back(keyCharacter);
+
+   for (i = 0; i < removeTheString.length(); i++)
+   {
+      string aChar = removeTheString.substr(i, 1); // reduces phrase to one
+      // character
+      int location = removeChar.find(aChar, 0); // finds location of successive
+      // characters
+
+      if (location < 0)
+         noCharacter = noCharacter + aChar; //aChar is not the key character,
+      // so keep it
+   }
+
+   return noCharacter;
+
+}
+
+// returns count of the inputted key character.
+int Target::keyCount()
+{
+   getString();
+   getKey();
+   int i, keyCount = 0;
+   string countKeyTheString = theString;
+
+   // counter goes up for every detection of key character
+   for (i = 0; i < countKeyTheString.length(); i++)
+   {
+      if (countKeyTheString[i] == getKey())
+         keyCount = keyCount + 1;
+   }
+
+   return keyCount;
+
+}
+
+// repeats input until one character is typed.
+char getKeyCharacter()
+{
+   string userKey;
+   while(1)
+   {
+      cout << "Please enter a SINGLE character to act as key:" << endl;
+      getline(cin, userKey);
+
+      if (userKey.length() != 1)
+         continue;
+
+      break;
+   }
+
+   // conversion from string to char
+   char charKey = userKey[0];
+
+   return charKey;
+}
+
+
+// repeats input until a phrase between and including 6 and 500 characters is
+// typed.
+string getString()
+{
+   const int MIN_STRING_LEN = 6;
+   const int MAX_STRING_LEN = 500;
+   string userString;
+   while(1)
+   {
+      cout << "Please enter a phrase or sentence >= 6 and <= 500 characters:"
+            << endl;
+      getline(cin, userString);
+
+      if (userString.length() < MIN_STRING_LEN || (userString.length() >
+            MAX_STRING_LEN))
+         continue;
+
+   break;
+   }
+
+return userString;
+}
+
+ /* -------------------------- OUTPUT #1 ----------------------
+
+Please enter a SINGLE character to act as key:
+itmrw 
+Please enter a SINGLE character to act as key:
+$$$ M
+Please enter a SINGLE character to act as key:
+ m
+Please enter a SINGLE character to act as key:
+M
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+mriamM
+String with 'M' masked:
+mriam$
+
+String with 'M' removed:
+mriam
+
+# of M's: 1
+
+Please enter a SINGLE character to act as key:
+%
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+%k
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+%%%%%%%%%% %%% rkm%krimrKMimraMIK
+String with '%' masked:
+$$$$$$$$$$ $$$ rkm$krimrKMimraMIK
+
+String with '%' removed:
+  rkmkrimrKMimraMIK
+
+# of %'s: 14
+
+Please enter a SINGLE character to act as key:
+L
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+LOLOLOLOOolololOLOLOLolololL L L O L
+String with 'L' masked:
+$O$O$O$OOolololO$O$O$ololol$ $ $ O $
+
+String with 'L' removed:
+OOOOOolololOOOololol   O 
+
+# of L's: 11
+
+That's it for this many trials: 3
+
+ /* -------------------------- OUTPUT #2 ----------------------
+
+Please enter a SINGLE character to act as key:
+9
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+4339443mq MSDJM5 % 539k
+String with '9' masked:
+433$443mq MSDJM5 % 53$k
+
+String with '9' removed:
+433443mq MSDJM5 % 53k
+
+# of 9's: 2
+
+Please enter a SINGLE character to act as key:
+Y
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+tiiamf ndfunadf8340$MSDKDOLA
+String with 'Y' masked:
+tiiamf ndfunadf8340$MSDKDOLA
+
+String with 'Y' removed:
+tiiamf ndfunadf8340$MSDKDOLA
+
+# of Y's: 0
+
+Please enter a SINGLE character to act as key:
+b
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+BMBMBbM$($*O$)#@ #M@(MKDLAbbbbbbbbmbMb
+String with 'b' masked:
+BMBMB$M$($*O$)#@ #M@(MKDLA$$$$$$$$m$M$
+
+String with 'b' removed:
+BMBMBM$($*O$)#@ #M@(MKDLAmM
+
+# of b's: 11
+
+That's it for this many trials: 3
+
+ /* -------------------------- OUTPUT #3 ----------------------
+
+Please enter a SINGLE character to act as key:
+urai m
+Please enter a SINGLE character to act as key:
+raikas mfk
+Please enter a SINGLE character to act as key:
+;
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+;fsok
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+String with ';' masked:
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+String with ';' removed:
+
+
+# of ;'s: 38
+
+Please enter a SINGLE character to act as key:
+6
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+><><>%$#@MFDK03947692056 6294 6452m
+String with '6' masked:
+><><>%$#@MFDK03947$9205$ $294 $452m
+
+String with '6' removed:
+><><>%$#@MFDK039479205 294 452m
+
+# of 6's: 4
+
+Please enter a SINGLE character to act as key:
+A
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+                    A                    
+String with 'A' masked:
+                    $                    
+
+String with 'A' removed:
+                                        
+
+# of A's: 1
+
+That's it for this many trials: 3
+
+ /* -------------------------- OUTPUT #4 ----------------------
+
+Please enter a SINGLE character to act as key:
+)
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+((((()((((()(((()(()()))))O O()O
+String with ')' masked:
+((((($((((($(((($(($($$$$$O O($O
+
+String with ')' removed:
+(((((((((((((((((O O(O
+
+# of )'s: 10
+
+Please enter a SINGLE character to act as key:
+y
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+akdosadSDMIA(49 4301mir
+String with 'y' masked:
+akdosadSDMIA(49 4301mir
+
+String with 'y' removed:
+akdosadSDMIA(49 4301mir
+
+# of y's: 0
+
+Please enter a SINGLE character to act as key:
+2
+Please enter a phrase or sentence >= 6 and <= 500 characters:
+1234567890 0987654321 !@#$%^&*() )(*&^%$#@!
+String with '2' masked:
+1$34567890 09876543$1 !@#$%^&*() )(*&^%$#@!
+
+String with '2' removed:
+134567890 098765431 !@#$%^&*() )(*&^%$#@!
+
+# of 2's: 2
+
+That's it for this many trials: 3
+

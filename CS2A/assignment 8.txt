@@ -1,0 +1,371 @@
+// Name: Mitchell Rotter-Sieren
+// Class: F21 CS F002A 03W
+// Assignment: Assignment #8, Computer Dating
+
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <cmath>
+using namespace std;
+
+
+
+class DateProfile
+{
+public:
+   DateProfile (char gender, char searchGender, int romance, int distance,
+         int id);
+   // a constructor that initializes all members according to the passed
+   //parameters.
+
+   DateProfile ();
+   //a default constructor that initializes all members to their default values.
+
+   static const int MIN_ROMANCE = 1;
+   static const int MAX_ROMANCE = 10;
+   static const int MIN_DISTANCE = 1;
+   static const int MAX_DISTANCE = 10;
+   static const int MIN_ID_LEN = 4;
+   static const int MAX_ID_LEN = 5;
+   static const char DEFAULT_GEND = 'X';
+   static const char DEFAULT_SEARCH_GEND = 'X';
+   static const int DEFAULT_ROMANCE = 5;
+   static const int DEFAULT_DISTANCE = 5;
+   static const int DEFAULT_ID = 1111;
+
+   bool setGender(char newGdr);
+   bool setSearchGender(char newSrchGdr);
+   bool setRomance(int newRmnc);
+   bool setDistance(int newDist);
+   bool setID(int newIdent);
+   char getGender();
+   char getSearchGender();
+   int getRomance();
+   int getDistance();
+   int getID();
+   bool validGender(char testGdr);
+   bool validRomance(int testRmnc);
+   bool validDistance(int testDist);
+   bool validID(int testIdent);
+   void setAll(char allGdr, char allSrchGdr, int allRmnc, int allDist,
+         int allIdent);
+   // Precondition: takes all parameters and acts like a mutator, but void
+   // return type
+   void setDefaults();
+   // Precondition: sets all five parameters to their default values
+   const double operator *(const DateProfile& profile);
+   // creates an overloaded method of * that will compare two DateProfile
+   // objects.
+
+
+private:
+   char gdr, srchGdr;
+   int rmnc, dist, ident;
+   int determineGenderFit(DateProfile partner);
+   // returns either a 0 or 1 depending on the gender compatibility of the
+   // calling object and the passed parameter object.
+   double determineRomanceFit(DateProfile partner);
+   // returns a number from (but not including) 0.0 to (and including) 1.0
+   // depending on the romance compatibility of the calling object and the
+   // passed parameter object.
+   double determineDistanceFit(DateProfile partner);
+   // returns a number from 0.0 to 1.0 depending on the distance compatibility
+   // of the calling object and the passed parameter object.
+
+};
+
+
+int main()
+{
+   DateProfile applicant1, applicant2, applicant3, applicant4;
+
+   applicant1.setDefaults();
+   applicant2.setDefaults();
+   applicant3.setDefaults();
+   applicant4.setDefaults();
+
+
+   applicant1.setGender('M');
+   applicant1.setSearchGender('F');
+   applicant1.setRomance(4);
+   applicant1.setDistance(6);
+   applicant1.setID(123455);
+
+   applicant2.setGender('F');
+   applicant2.setSearchGender('M');
+   applicant2.setRomance(7);
+   applicant2.setDistance(6);
+   applicant2.setID(2234);
+
+   applicant3.setGender('F');
+   applicant3.setSearchGender('F');
+   applicant3.setRomance(1);
+   applicant3.setDistance(7);
+   applicant3.setID(7956);
+
+   applicant4.setGender('M');
+   applicant4.setSearchGender('F');
+   applicant4.setRomance(1);
+   applicant4.setDistance(1);
+   applicant4.setID(4269);
+
+   cout << "Fit between "<< applicant1.getID()<< " and "<< applicant1.getID()
+         << " is: " << applicant1 * applicant1 << endl;
+   cout << "Fit between "<< applicant1.getID()<< " and "<< applicant2.getID()
+         << " is: " << applicant1 * applicant2 << endl;
+   cout << "Fit between "<< applicant1.getID()<< " and "<< applicant3.getID()
+         << " is: " << applicant1 * applicant3 << endl;
+   cout << "Fit between "<< applicant1.getID()<< " and "<< applicant4.getID()
+         << " is: " << applicant1 * applicant4 << endl << endl;
+
+   cout << "Fit between "<< applicant2.getID()<< " and "<< applicant1.getID()
+         << " is: " << applicant2 * applicant1 << endl;
+   cout << "Fit between "<< applicant2.getID()<< " and "<< applicant2.getID()
+         << " is: " << applicant2 * applicant2 << endl;
+   cout << "Fit between "<< applicant2.getID()<< " and "<< applicant3.getID()
+         << " is: " << applicant2 * applicant3 << endl;
+   cout << "Fit between "<< applicant2.getID()<< " and "<< applicant4.getID()
+         << " is: " << applicant2 * applicant4 << endl << endl;
+
+   cout << "Fit between "<< applicant3.getID()<< " and "<< applicant1.getID()
+         << " is: " << applicant3 * applicant1 << endl;
+   cout << "Fit between "<< applicant3.getID()<< " and "<< applicant2.getID()
+         << " is: " << applicant3 * applicant2 << endl;
+   cout << "Fit between "<< applicant3.getID()<< " and "<< applicant3.getID()
+         << " is: " << applicant3 * applicant3 << endl;
+   cout << "Fit between "<< applicant3.getID()<< " and "<< applicant4.getID()
+         << " is: " << applicant3 * applicant4 << endl << endl;
+
+   cout << "Fit between "<< applicant4.getID()<< " and "<< applicant1.getID()
+         << " is: " << applicant4 * applicant1 << endl;
+   cout << "Fit between "<< applicant4.getID()<< " and "<< applicant2.getID()
+         << " is: " << applicant4 * applicant2 << endl;
+   cout << "Fit between "<< applicant4.getID()<< " and "<< applicant3.getID()
+         << " is: " << applicant4 * applicant3 << endl;
+   cout << "Fit between "<< applicant4.getID()<< " and "<< applicant4.getID()
+         << " is: " << applicant4 * applicant4 << endl << endl;
+
+   return 0;
+}
+
+DateProfile::DateProfile(char gender, char searchGender, int romance,
+      int distance, int id)
+{
+   setAll(gender, searchGender, romance, distance, id);
+}
+
+
+
+DateProfile::DateProfile() : gdr(DEFAULT_GEND), srchGdr(DEFAULT_SEARCH_GEND),
+      rmnc(DEFAULT_ROMANCE), dist(DEFAULT_DISTANCE), ident(DEFAULT_ID)
+{}
+
+const double  DateProfile::operator *(const DateProfile& profile)
+{
+   double aveScore = (determineRomanceFit(profile) +
+         determineDistanceFit(profile)) / 2;
+   if (determineGenderFit(profile) == 0)
+      return 0.0;
+   else
+      return aveScore;
+
+}
+
+//checks if char input is 'M' or 'F'.
+bool DateProfile::validGender(char testGdr)
+{
+
+   if (testGdr == 'M' || testGdr == 'F')
+      return true;
+   else
+      return false;
+}
+
+//checks if romance input is between MIN_ROMANCE and MAX_ROMANCE.
+bool DateProfile::validRomance(int testRmnc)
+{
+
+   if (testRmnc >= MIN_ROMANCE && testRmnc <= MAX_ROMANCE)
+      return true;
+   else
+      return false;
+}
+
+//checks if distance input is between MIN_DISTANCE and MAX_DISTANCE.
+bool DateProfile::validDistance(int testDist)
+{
+
+   if (testDist >= MIN_DISTANCE && testDist <= MAX_DISTANCE)
+      return true;
+   else
+      return false;
+}
+
+//checks if ID input is between MIN_ID_LEN and MAX_ID_LEN digits.
+bool DateProfile::validID(int testIdent)
+{
+
+   int size = trunc(log10(testIdent)) + 1;
+   if (size == MIN_ID_LEN || size == MAX_ID_LEN)
+      return true;
+   else
+      return false;
+}
+
+
+bool DateProfile::setGender(char newGdr)
+{
+   if (validGender(newGdr))
+   {
+      gdr = newGdr;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool DateProfile::setSearchGender(char newSrchGdr)
+{
+   if (validGender(newSrchGdr))
+   {
+      srchGdr = newSrchGdr;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool DateProfile::setRomance(int newRmnc)
+{
+   if (validRomance(newRmnc))
+   {
+      rmnc = newRmnc;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool DateProfile::setDistance(int newDist)
+{
+   if (validDistance(newDist))
+   {
+      dist = newDist;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool DateProfile::setID(int newIdent)
+{
+   if (validID(newIdent))
+   {
+      ident = newIdent;
+      return true;
+   }
+   else
+      return false;
+}
+
+void DateProfile::setAll(char allGdr, char allSrchGdr, int allRmnc,
+      int allDist, int allIdent)
+{
+   gdr = allGdr;
+   srchGdr = allSrchGdr;
+   rmnc = allRmnc;
+   dist = allDist;
+   ident = allIdent;
+}
+
+void DateProfile::setDefaults()
+{
+   gdr = DEFAULT_GEND;
+   srchGdr = DEFAULT_SEARCH_GEND;
+   rmnc = DEFAULT_ROMANCE;
+   dist = DEFAULT_DISTANCE;
+   ident = DEFAULT_ID;
+}
+
+char DateProfile::getGender()
+{
+   return gdr;
+}
+
+char DateProfile::getSearchGender()
+{
+   return srchGdr;
+}
+
+int DateProfile::getRomance()
+{
+   return rmnc;
+}
+
+int DateProfile::getDistance()
+{
+   return dist;
+}
+
+int DateProfile::getID()
+{
+   return ident;
+}
+
+
+// returns either a 0 or 1 depending on the gender compatibility of the
+// calling object and the passed parameter object.
+int DateProfile::determineGenderFit(DateProfile partner)
+{
+   if ((getSearchGender() == partner.getGender()) && (getGender() ==
+         partner.getSearchGender()))
+      return 1;
+   else
+      return 0;
+
+}
+
+// returns a number from (but not including) 0.0 to (and including) 1.0
+// depending on the romance compatibility of the calling object and the
+// passed parameter object.
+double DateProfile::determineRomanceFit(DateProfile partner)
+{
+   double difference = abs(getRomance() - partner.getRomance());
+
+   difference = (MAX_ROMANCE - difference) / MAX_ROMANCE;
+   return difference;
+}
+
+// returns a number from 0.0 to 1.0 depending on the distance compatibility
+// of the calling object and the passed parameter object.
+double DateProfile::determineDistanceFit(DateProfile partner)
+{
+   double difference = abs(getDistance() - partner.getDistance());
+
+   difference = (MAX_DISTANCE - difference) / MAX_DISTANCE;
+   return difference;
+}
+
+ /* -------------------------- OUTPUT ----------------------
+
+Fit between 1111 and 1111 is: 0
+Fit between 1111 and 2234 is: 0.85
+Fit between 1111 and 7956 is: 0
+Fit between 1111 and 4269 is: 0
+
+Fit between 2234 and 1111 is: 0.85
+Fit between 2234 and 2234 is: 0
+Fit between 2234 and 7956 is: 0
+Fit between 2234 and 4269 is: 0.45
+
+Fit between 7956 and 1111 is: 0
+Fit between 7956 and 2234 is: 0
+Fit between 7956 and 7956 is: 1
+Fit between 7956 and 4269 is: 0
+
+Fit between 4269 and 1111 is: 0
+Fit between 4269 and 2234 is: 0.45
+Fit between 4269 and 7956 is: 0
+Fit between 4269 and 4269 is: 0
+

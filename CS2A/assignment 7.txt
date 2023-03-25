@@ -1,0 +1,602 @@
+// Name: Mitchell Rotter-Sieren
+// Class: F21 CS F002A 03W
+// Assignment: Assignment #7, Casino with Methods and a Class
+
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std;
+
+
+
+class ThreeChar
+{
+public:
+   ThreeChar (char ch1, char ch2, char ch3);
+   // a constructor that initializes all members according to the passed
+   //parameters. Calls the mutators and If any passed parameter
+   //does not pass the test, a default letter should be stored in that member.
+
+   ThreeChar ();
+   //a default constructor that initializes all members to DEFAULT_CHAR.
+
+   static const char DEFAULT_CHAR = '\0';
+   static const int MIN_LETTER = 'A';
+   static const int MAX_LETTER = 'Z';
+   bool setChar1(char newChar1);
+   bool setChar2(char newChar2);
+   bool setChar3(char newChar3);
+   char getChar1();
+   char getChar2();
+   char getChar3();
+   bool validChar(char testChar);
+   // Precondition: checks if a character is between capital A and Z.
+
+private:
+   char char1 = DEFAULT_CHAR;
+   char char2 = DEFAULT_CHAR;
+   char char3 = DEFAULT_CHAR;
+
+};
+
+int getBet();
+//gets the bet from the user and returns it to main()
+
+ThreeChar pull();
+//will simulate a random pull of the slot machine -- it generates three
+//random chars and returns them as a ThreeChar object to main()
+
+char randChar();
+//It produces and returns a single random char based on:
+//A = 33%
+//B = 20%
+//H = 5%
+//Z = 42%
+
+int getPayMultiplier (ThreeChar thePull);
+//takes the pullChar as a parameter, and inspects it to determine what its pay
+//multiplier should be:  5?  15?  100?  0?
+
+void displayResults (ThreeChar thePull, int winnings );
+//Shows results of pull, and user receives the news about how much they won/lost
+
+int main()
+{
+   while(1)
+   {
+      int bet = getBet();
+      if (bet==0)
+      {
+         cout << "Thanks for coming to the casino" << endl;
+         break;
+      }
+
+
+      ThreeChar pullChar = pull();
+      int multiplier = getPayMultiplier(pullChar);
+      int winnings;
+
+      winnings = bet * multiplier;
+
+      displayResults(pullChar, winnings);
+   }
+
+   return(0);
+}
+
+ThreeChar::ThreeChar(char ch1, char ch2, char ch3)
+{
+   char1 = ch1;
+   char2 = ch2;
+   char3 = ch3;
+}
+
+
+
+ThreeChar::ThreeChar() : char1(DEFAULT_CHAR), char2(DEFAULT_CHAR),
+      char3(DEFAULT_CHAR)
+{}
+
+
+int getBet()
+{
+   int bet;
+   string userBet;
+   const int MIN_INPUT = 0;
+   const int MAX_INPUT =50;
+
+   while(1)
+   {
+      cout << "How much would you like to bet (1 - 50) or 0 to quit?" << endl;
+      getline(cin, userBet);
+      istringstream(userBet) >> bet;
+
+      if ((bet < MIN_INPUT) || bet > MAX_INPUT)
+      {
+         cout << "**Sorry, that is out of the range. It must be between "
+               << MIN_INPUT << " and " << MAX_INPUT << endl << endl;
+         continue;
+      }
+
+      break;
+   }
+   return bet;
+}
+
+
+ThreeChar pull()
+{
+   char oneSlot, twoSlot, threeSlot;
+
+   cout << "whirrrrrr .... and your pull is ..." << endl;
+
+   oneSlot = randChar();
+
+   twoSlot = randChar();
+
+   threeSlot = randChar();
+
+   return ThreeChar(oneSlot, twoSlot, threeSlot);
+
+}
+
+char randChar()
+{
+   static const int RAN_MAX = 100;
+   static const int APROB = 32;
+   static const int BPROB = 52;
+   static const int HPROB = 57;
+   int randResult;
+   char charResult;
+
+   randResult = rand() % RAN_MAX;
+
+   if (randResult <= APROB)
+      charResult = 'A';
+   else if (randResult > APROB && randResult <= BPROB)
+      charResult = 'B';
+   else if (randResult > BPROB && randResult <= HPROB)
+      charResult = 'H';
+   else
+      charResult = 'Z';
+
+   return charResult;
+
+}
+
+int getPayMultiplier(ThreeChar thePull)
+{
+   int multiplier;
+
+   char slot1 = thePull.getChar1();
+   char slot2 = thePull.getChar2();
+   char slot3 = thePull.getChar3();
+
+   if (slot1 == 'A' && slot2 != 'A')
+      multiplier = 5;
+   else if (slot1 == 'A' && slot2 == 'A' && slot3 != 'A')
+      multiplier = 15;
+   else if (slot1 == 'A' && slot2 == 'A' && slot3 == 'A')
+      multiplier = 30;
+   else if (slot1 == 'B' && slot2 == 'B' && slot3 == 'B')
+      multiplier = 50;
+   else if (slot1 == 'H' && slot2 == 'H' && slot3 == 'H')
+      multiplier = 100;
+   else
+      multiplier = 0;
+
+   return multiplier;
+}
+
+void displayResults(ThreeChar thePull, int winnings )
+{
+   char slot1 = thePull.getChar1();
+   char slot2 = thePull.getChar2();
+   char slot3 = thePull.getChar3();
+
+   cout << " " << slot1 << " " << slot2 << " " << slot3 << endl;
+
+   if (winnings > 0)
+      cout << "congratulations, you win: " << winnings << endl;
+   else
+      cout << "sorry, you lose." << endl;
+
+}
+
+//checks if char input is a capital letter between A and Z.
+bool ThreeChar::validChar(char testChar)
+{
+   const int MIN_LETTER = 'A';
+   const int MAX_LETTER = 'Z';
+
+   if (testChar >= MIN_LETTER && testChar <= MAX_LETTER)
+      return true;
+   else
+      return false;
+}
+
+bool ThreeChar::setChar1(char newChar1)
+{
+   if (validChar(newChar1))
+   {
+      char1 = newChar1;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool ThreeChar::setChar2(char newChar2)
+{
+   if (validChar(newChar2))
+   {
+      char2 = newChar2;
+      return true;
+   }
+   else
+      return false;
+}
+
+bool ThreeChar::setChar3(char newChar3)
+{
+   if (validChar(newChar3))
+   {
+      char3 = newChar3;
+      return true;
+   }
+   else
+      return false;
+}
+
+char ThreeChar::getChar1()
+{
+   return char1;
+}
+
+char ThreeChar::getChar2()
+{
+   return char2;
+}
+
+char ThreeChar::getChar3()
+{
+   return char3;
+}
+
+/* -------------------------- OUTPUT ----------------------
+
+
+How much would you like to bet (1 - 50) or 0 to quit?
+2
+whirrrrrr .... and your pull is ...
+ B Z B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+1
+whirrrrrr .... and your pull is ...
+ A Z A
+congratulations, you win: 5
+How much would you like to bet (1 - 50) or 0 to quit?
+4
+whirrrrrr .... and your pull is ...
+ Z Z Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B Z
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A A H
+congratulations, you win: 75
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A A Z
+congratulations, you win: 75
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B Z
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z B A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ H Z B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z H
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B Z
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B B Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B B A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B A A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z B A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A Z H
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ H B Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B B A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B B
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A Z A
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B B A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A Z A
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B H Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ H Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B B B
+congratulations, you win: 250
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A A Z
+congratulations, you win: 75
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B H
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z H Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B A A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B A
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A A Z
+congratulations, you win: 75
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A Z Z
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ H A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B B
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A B Z
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z Z Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z B H
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A B
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A Z A
+congratulations, you win: 25
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ Z A Z
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ B Z A
+sorry, you lose.
+How much would you like to bet (1 - 50) or 0 to quit?
+5
+whirrrrrr .... and your pull is ...
+ A A A
+congratulations, you win: 150
+How much would you like to bet (1 - 50) or 0 to quit?
+0
+Thanks for coming to the casino
